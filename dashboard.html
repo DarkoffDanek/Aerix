@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Моё пространство</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>📂 Мои файлы</h2>
+  <button onclick="logout()">Выйти</button>
+
+  <hr>
+
+  <input type="file" id="fileInput">
+  <button onclick="uploadFile()">Загрузить</button>
+
+  <ul id="fileList"></ul>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
