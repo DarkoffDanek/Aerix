@@ -2,141 +2,23 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>AERIX - Облачное хранилище</title>
+  <title>Облако</title>
+  <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: #eee;
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin: 6px 0;
-    }
-    button {
-      cursor: pointer;
-    }
-    hr {
-      margin: 20px 0;
-    }
-    a {
-      color: #4da3ff;
-    }
-  </style>
 </head>
 <body>
 
-<h2>☁️ Облачное хранилище AERIX</h2>
+<div class="container">
+  <h1>☁️ Моё облако</h1>
+  <p>Вход в личное хранилище</p>
 
-<div id="auth">
   <input id="email" type="email" placeholder="Email">
   <input id="password" type="password" placeholder="Пароль">
+
+  <button onclick="signIn()">Войти</button>
   <button onclick="signUp()">Регистрация</button>
-  <button onclick="signIn()">Вход</button>
 </div>
 
-<div id="app" style="display:none;">
-  <button onclick="logout()">Выйти</button>
-  <hr>
-
-  <input type="file" id="fileInput">
-  <button onclick="uploadFile()">Загрузить файл</button>
-
-  <h3>Файлы</h3>
-  <ul id="fileList"></ul>
-</div>
-
-<script>
-  // 🔴 ВСТАВЬ СЮДА СВОИ ДАННЫЕ
-  const SUPABASE_URL = "https://wcnjgiaksmuzlclikrwi.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_H4evmtaxsOCE03OCQkOYOA_EXSF2E5M";
-
-  const supabase = supabaseJs.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-  async function signUp() {
-    const email = email.value;
-    const password = password.value;
-
-    const { error } = await supabase.auth.signUp({ email, password });
-    alert(error ? error.message : "Проверь почту для подтверждения");
-  }
-
-  async function signIn() {
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email.value,
-      password: password.value
-    });
-
-    if (error) alert(error.message);
-    else checkAuth();
-  }
-
-  async function logout() {
-    await supabase.auth.signOut();
-    location.reload();
-  }
-
-  async function uploadFile() {
-    const file = fileInput.files[0];
-    if (!file) return alert("Выбери файл");
-
-    const user = (await supabase.auth.getUser()).data.user;
-
-    const path = `${user.id}/${file.name}`;
-
-    const { error } = await supabase
-      .storage
-      .from("files")
-      .upload(path, file, { upsert: true });
-
-    if (error) alert(error.message);
-    else loadFiles();
-  }
-
-  async function loadFiles() {
-    const list = document.getElementById("fileList");
-    list.innerHTML = "";
-
-    const user = (await supabase.auth.getUser()).data.user;
-
-    const { data, error } = await supabase
-      .storage
-      .from("files")
-      .list(user.id);
-
-    if (error) return alert(error.message);
-
-    for (const file of data) {
-      const { data: link } = await supabase
-        .storage
-        .from("files")
-        .createSignedUrl(`${user.id}/${file.name}`, 3600);
-
-      const li = document.createElement("li");
-      li.innerHTML = `<a href="${link.signedUrl}" target="_blank">${file.name}</a>`;
-      list.appendChild(li);
-    }
-  }
-
-  async function checkAuth() {
-    const { data } = await supabase.auth.getSession();
-    if (data.session) {
-      auth.style.display = "none";
-      app.style.display = "block";
-      loadFiles();
-    }
-  }
-
-  checkAuth();
-</script>
-
+<script src="js/app.js"></script>
 </body>
 </html>
