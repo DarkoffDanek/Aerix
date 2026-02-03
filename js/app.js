@@ -1,6 +1,6 @@
 // 🔴 ВСТАВЬ СВОИ ДАННЫЕ SUPABASE
-const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
-const SUPABASE_KEY = "YOUR_PUBLIC_ANON_KEY";
+const SUPABASE_URL = "https://wcnjgiaksmuzlclikrwi.supabase.co";
+const SUPABASE_KEY = "sb_secret_nnOBpeoR7L49r6lF3qdzvg_AmpG1cxp";
 
 const supabase = supabaseJs.createClient(
   SUPABASE_URL,
